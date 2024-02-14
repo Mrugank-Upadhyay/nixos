@@ -6,8 +6,8 @@
   programs.git = {
     enable = true;
 
-    userName = "mihranmashhud";
-    userEmail = "mihranmashhud@gmail.com";
+    userName = "mrugank";
+    userEmail = "mrugank2@gmail.com";
 
     extraConfig = {
       color.ui = "auto";

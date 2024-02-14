@@ -10,17 +10,17 @@
     firefox = {
       enable = true;
       package = pkgs.firefox-bin;
-      profiles.mihranmashhud = {
+      profiles.mrugank = {
         settings = {
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable userChrome.css
           "privacy.webrtc.hideGlobalIndicator" = true;
           "media.ffmpeg.vaapi.enabled" = true;
         };
-        userChrome = ''
-          #TabsToolbar {
-            visibility: collapse !important;
-          }
-        '';
+        # userChrome = ''
+        #   #TabsToolbar {
+        #     visibility: collapse !important;
+        #  }
+        # '';
         search.engines = {
           "Nix Packages" = {
             urls = [
@@ -73,7 +73,7 @@
           "Bing".metaData.hidden = "true";
         };
         search.force = true;
-        search.default = "DuckDuckGo";
+        search.default = "Google";
       };
     };
   };

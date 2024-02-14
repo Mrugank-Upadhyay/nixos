@@ -26,10 +26,10 @@
   boot = {
     loader.systemd-boot = {
       enable = true;
-      configurationLimit = 5;
+      configurationLimit = 2;
     };
     loader.efi.canTouchEfiVariables = true;
-    loader.timeout = 10;
+    loader.timeout = 30;
     # Plymouth with silent boot
     consoleLogLevel = 0;
     initrd.verbose = false;
