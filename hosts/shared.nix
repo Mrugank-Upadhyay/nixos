@@ -274,6 +274,7 @@
     winetricks
 
     protontricks
+    vscode
   ];
 
   environment.variables = {
