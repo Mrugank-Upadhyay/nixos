@@ -47,7 +47,9 @@ in {
         follow_mouse = 2;
         kb_layout = "us,ara";
         kb_options = "grp:ctrls_toggle";
-        natural_scroll = true;
+        touchpad = {
+          natural_scroll = true;
+        };
       };
 
       gestures = {

@@ -21,7 +21,7 @@
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [
-        "DP-1, highrr, 1920x0, 1"
+        "DP-2, highrr, 1920x0, 1"
         "HDMI-A-1, 1920x1080, 0x0, 1"
       ];
       animations = {
@@ -34,11 +34,11 @@
         ];
       };
       workspace = [
-        "1, monitor:DP-1, default:true"
-        "2, monitor:DP-1"
-        "3, monitor:DP-1"
-        "4, monitor:DP-1"
-        "5, monitor:DP-1"
+        "1, monitor:DP-2, default:true"
+        "2, monitor:DP-2"
+        "3, monitor:DP-2"
+        "4, monitor:DP-2"
+        "5, monitor:DP-2"
         "6, monitor:HDMI-A-1, default:true"
         "7, monitor:HDMI-A-1"
         "8, monitor:HDMI-A-1"
@@ -48,15 +48,15 @@
       exec-once = [
         "waybar -c ~/.config/waybar/desktop-config.json > /tmp/waybar.log &"
         "[workspace 6 silent] discord &"
-        "obs --startreplaybuffer --minimize-to-tray &"
+        # "obs --startreplaybuffer --minimize-to-tray &"
         "[workspace 10 silent] pavucontrol &"
         "xwaylandvideobridge &"
-        "openrgb -p 'cool ice'"
+        # "openrgb -p 'cool ice'"
       ];
 
-      bind = [
-        ",F10,exec,obs-cli --password $(cat ~/.config/obs-studio/password) replaybuffer save"
-      ];
+      # bind = [
+      #   ",F10,exec,obs-cli --password $(cat ~/.config/obs-studio/password) replaybuffer save"
+      # ];
 
       env = "WLR_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1";
     };

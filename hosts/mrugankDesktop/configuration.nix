@@ -9,11 +9,10 @@
   imports = [
     ../shared.nix
     ./hardware-configuration.nix
-    ../../modules/gpu-passthrough.nix
   ];
 
   networking.hostName = "mrugankDesktop"; # Define your hostname.
-  networking.interfaces.enp4s0.wakeOnLan = {
+  networking.interfaces.enp42s0.wakeOnLan = {
     enable = true;
   };
 
@@ -22,7 +21,7 @@
 
   # Monitors listing
   services.xserver.xrandrHeads = [
-    "DP-1"
+    "DP-2"
     "HDMI-A-1"
   ];
 
@@ -39,30 +38,10 @@
     gpuOverclock.enable = true;
   };
 
-  networking.firewall = {
-    allowedTCPPortRanges = [
-      {
-        from = 9943;
-        to = 9944;
-      } # ALVR
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 9943;
-        to = 9944;
-      } # ALVR
-    ];
-  };
-
   services.pipewire.lowLatency.enable = true;
   security.rtkit.enable = true;
 
   environment.systemPackages = with pkgs; [
-    nur.repos.materus.alvr
-    wlxoverlay
-    pulseaudio # for alvr audio script
-    sidequest
     r2modman
-    gkraken
   ];
 }
