@@ -57,6 +57,7 @@
     hunspell
     hunspellDicts.en_US
     hunspellDicts.en_CA
+    gammastep
 
     # archives
     zip
