@@ -77,7 +77,7 @@ in {
         # Wallpaper
         "swww init"
         # Night-Light
-        "gammastep -c ../../config/gammastep/config.ini &"
+        "gammastep -c ~/.config/gammastep/config.ini &"
       ];
 
       windowrulev2 = windowrules [
