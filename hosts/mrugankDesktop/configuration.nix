@@ -28,10 +28,10 @@
   # Enable AMDVLK
   hardware.amdgpu.amdvlk = true;
 
-  services.hardware.openrgb = {
-    enable = true;
-    motherboard = "amd";
-  };
+  # services.hardware.openrgb = {
+  #   enable = true;
+  #   motherboard = "amd";
+  # };
 
   programs.corectrl = {
     enable = true;
