@@ -16,6 +16,8 @@
       cat = "bat";
       npm = "pnpm";
       npx = "pnpm dlx";
+      ddc-dp = "ddcutil --bus=7 setvcp 10";
+      ddc-hd = "ddcutil --bus=5 setvcp 10";
     };
 
     # Load completion before loading plugins with antidote.
@@ -23,7 +25,10 @@
       /*
       bash
       */
-      "autoload -U compinit && compinit";
+      ''
+        export NIXPKGS_ALLOW_UNFREE=1
+        autoload -U compinit && compinit
+    '';
     enableCompletion = false;
 
     antidote = {

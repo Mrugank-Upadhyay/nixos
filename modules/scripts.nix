@@ -1,6 +1,6 @@
 {pkgs}:
 with pkgs; let
-  bgChoiceFile = "/tmp/background-choice";
+  bgChoiceFile = "$HOME/.cache/background-choice";
   bgsLocation = "$HOME/Pictures/Backgrounds";
   system-sounds = "${pkgs.deepin.deepin-sound-theme}/share/sounds/deepin/stereo";
 in {
@@ -13,7 +13,7 @@ in {
       */
       ''
         CHOICE="${bgChoiceFile}"
-        pic=$(cat $CHOICE)
+        pic=$(cat "$CHOICE")
         swaylock "$@" -i "$pic" -s fill
       '';
   };
@@ -32,7 +32,7 @@ in {
 
         pic=$(imv .)
 
-        echo "$pic" > $CHOICE
+        echo "$pic" > "$CHOICE"
 
         if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
           swww img "$pic" --transition-type center
@@ -54,13 +54,13 @@ in {
 
         cd "${bgsLocation}"
 
-        pic=$(find "$PWD" -type f | grep -v "$(cat $CHOICE)" | shuf -n1)
+        pic=$(find "$PWD" -type f | grep -v "$(cat "$CHOICE")" | shuf -n1)
 
         if [ -z "$pic" ]; then
           pic=$(find "$PWD" | shuf -n1)
         fi
 
-        echo "$pic" > $CHOICE
+        echo "$pic" > "$CHOICE"
 
         if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
           swww img "$pic" --transition-type center
@@ -70,17 +70,17 @@ in {
       '';
   };
 
-  start-replay-buffer = writeShellApplication {
-    name = "start-replay-buffer";
-    runtimeInputs = [obs-studio];
-    text =
-      /*
-      bash
-      */
-      ''
-        obs --startreplaybuffer --minimize-to-tray &
-      '';
-  };
+  # start-replay-buffer = writeShellApplication {
+  #   name = "start-replay-buffer";
+  #   runtimeInputs = [obs-studio];
+  #   text =
+  #     /*
+  #     bash
+  #     */
+  #     ''
+  #       obs --startreplaybuffer --minimize-to-tray &
+  #     '';
+  # };
 
   restart-laptop-waybar = writeShellApplication {
     name = "restart-laptop-waybar";

@@ -9,15 +9,14 @@
   home.packages = with pkgs; [
     obs-cli
   ];
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-websocket
-      obs-vaapi
-      obs-pipewire-audio-capture
-    ];
-  };
+  # programs.obs-studio = {
+  #   enable = true;
+  #   plugins = with pkgs.obs-studio-plugins; [
+  #     obs-websocket
+  #     obs-vaapi
+  #     obs-pipewire-audio-capture
+  #   ];
+  # };
   wayland.windowManager.hyprland = {
     settings = {
       monitor = [
@@ -50,15 +49,15 @@
         "[workspace 6 silent] discord &"
         # "obs --startreplaybuffer --minimize-to-tray &"
         "[workspace 10 silent] pavucontrol &"
+        "[workspace 10 silent] blueman-manager &"
         "xwaylandvideobridge &"
+        "gammastep -c ~/.config/gammastep/config.ini &"
         # "openrgb -p 'cool ice'"
       ];
 
       # bind = [
       #   ",F10,exec,obs-cli --password $(cat ~/.config/obs-studio/password) replaybuffer save"
       # ];
-
-      env = "WLR_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1";
     };
   };
 }
