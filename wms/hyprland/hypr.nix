@@ -47,9 +47,6 @@ in {
         follow_mouse = 2;
         kb_layout = "us,ara";
         kb_options = "grp:ctrls_toggle";
-        touchpad = {
-          natural_scroll = true;
-        };
       };
 
       gestures = {
@@ -79,6 +76,8 @@ in {
         "${pkgs.swayidle}/bin/swayidle -w before-sleep '${before-sleep}' &"
         # Wallpaper
         "swww init"
+        # Night-Light
+        "gammastep -c ~/.config/gammastep/config.ini &"
       ];
 
       windowrulev2 = windowrules [
