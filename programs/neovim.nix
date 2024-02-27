@@ -18,6 +18,7 @@
       luajitPackages.luarocks
       stylua
       alejandra
+      nil
     ];
   };
 }

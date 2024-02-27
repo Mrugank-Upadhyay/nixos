@@ -48,8 +48,11 @@
     vial
     transmission_4-gtk
     gparted
+    android-studio
+    gnome.gnome-calculator
 
     discord
+    notion-app-enhanced
     telegram-desktop
     teams-for-linux
 
@@ -74,11 +77,14 @@
     killall
     imagemagick
     fd
-
+    gammastep
+    ddcutil
+    
     # dev tools
     rustup
     gcc
     nodePackages.pnpm
+    htop
 
     # nix
     nix-index

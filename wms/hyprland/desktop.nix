@@ -49,7 +49,9 @@
         "[workspace 6 silent] discord &"
         # "obs --startreplaybuffer --minimize-to-tray &"
         "[workspace 10 silent] pavucontrol &"
+        "[workspace 10 silent] blueman-manager &"
         "xwaylandvideobridge &"
+        "gammastep -c ~/.config/gammastep/config.ini &"
         # "openrgb -p 'cool ice'"
       ];
 

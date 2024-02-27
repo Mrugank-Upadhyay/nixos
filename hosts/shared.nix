@@ -244,6 +244,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "i2c"
       "scanner"
       "lp"
     ];
