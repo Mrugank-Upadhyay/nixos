@@ -151,6 +151,9 @@
     epson-escpr
   ];
 
+  # Onedrive
+  services.onedrive.enable = true;
+
   # Scanning
   hardware.sane = {
     enable = true;
