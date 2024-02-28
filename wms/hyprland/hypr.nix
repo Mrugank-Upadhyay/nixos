@@ -78,6 +78,7 @@ in {
         "swww init"
         # Night-Light
         "gammastep -c ~/.config/gammastep/config.ini &"
+        "blueman-manager &"
       ];
 
       windowrulev2 = windowrules [
@@ -92,6 +93,18 @@ in {
         {
           windows = ["class:^(pavucontrol)$"];
           rules = ["workspace 10"];
+        }
+        {
+          windows = ["class:^(.blueman-manager-wrapped)$"];
+          rules = ["workspace 10"];
+        }
+        {
+          windows = ["class:^(org.gnome.Calculator)$"];
+          rules = [
+            "float"
+            "center"
+            "size 450 750"
+          ];
         }
         {
           windows = ["class:^(leagueclientux.exe)$"];
