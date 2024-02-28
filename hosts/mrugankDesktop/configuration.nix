@@ -33,6 +33,9 @@
   # Enable AMDVLK
   hardware.amdgpu.amdvlk = true;
 
+  # Enable Openrazer
+  hardware.openrazer.enable = true;
+  
   # services.hardware.openrgb = {
   #   enable = true;
   #   motherboard = "amd";
@@ -48,5 +51,6 @@
 
   environment.systemPackages = with pkgs; [
     r2modman
+    openrazer-daemon
   ];
 }

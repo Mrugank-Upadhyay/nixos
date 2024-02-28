@@ -247,6 +247,8 @@
       "i2c"
       "scanner"
       "lp"
+      "openrazer"
+      "plugdev"
     ];
     shell = pkgs.zsh;
   };
