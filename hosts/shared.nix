@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
   ...
 }: {
@@ -382,6 +383,20 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
+
+  # This should turn on numlock
+  # Taken from user 1sixth on https://discourse.nixos.org/t/how-to-enable-numlock-in-configuration-nix/24618/9
+  systemd.services.numLockOnTty = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      # /run/current-system/sw/bin/setleds -D +num < "$tty";
+      ExecStart = lib.mkForce (pkgs.writeShellScript "numLockOnTty" ''
+        for tty in /dev/tty{1..6}; do
+            ${pkgs.kbd}/bin/setleds -D +num < "$tty";
+        done
+      '');
+    };
+  };
 
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];

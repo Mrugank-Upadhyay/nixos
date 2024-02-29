@@ -107,6 +107,13 @@ in {
           ];
         }
         {
+          windows = ["title:$(splash)$"];
+          rules = [
+            "float"
+            "center"
+          ];
+        } 
+        {
           windows = ["class:^(leagueclientux.exe)$"];
           rules = [
             "workspace 4"

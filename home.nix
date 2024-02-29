@@ -61,6 +61,7 @@
     hunspellDicts.en_US
     hunspellDicts.en_CA
     gammastep
+    nomachine-client
 
     # archives
     zip

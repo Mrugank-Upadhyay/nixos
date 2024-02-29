@@ -27,11 +27,11 @@
       "locked": {
         "lastModified": 1,
         "narHash": "sha256-dFDn6PDryBvyw2llDdFYYlTxMiT5wHuR5BgNHxTjXmE=",
-        "path": "./derivations",
+        "path": "derivations",
         "type": "path"
       },
       "original": {
-        "path": "./derivations",
+        "path": "derivations",
         "type": "path"
       }
     },
