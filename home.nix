@@ -48,7 +48,7 @@
     vial
     transmission_4-gtk
     gparted
-    android-studio
+    androidStudioPackages.beta
     gnome.gnome-calculator
 
     discord
