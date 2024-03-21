@@ -50,6 +50,7 @@
     gparted
     androidStudioPackages.beta
     gnome.gnome-calculator
+    evolution # Gnome Calendar
 
     discord
     notion-app-enhanced
@@ -87,6 +88,7 @@
     gcc
     nodePackages.pnpm
     htop
+    go
 
     # nix
     nix-index

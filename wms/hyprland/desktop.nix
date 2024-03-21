@@ -55,6 +55,8 @@
         "[workspace 10 silent] blueman-manager &"
         "xwaylandvideobridge &"
         "gammastep -c ~/.config/gammastep/config.ini &"
+        "ddc-dp 100 &"
+        "ddc-hd 100 &"
         # "openrgb -p 'cool ice'"
       ];
 
