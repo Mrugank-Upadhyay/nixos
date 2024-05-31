@@ -62,7 +62,13 @@
     hunspellDicts.en_US
     hunspellDicts.en_CA
     gammastep
-    nomachine-client
+    notes-up
+    obs-studio
+    easyeffects
+    libsForQt5.kdenlive
+    zathura
+    masterpdfeditor
+    pdfmixtool
 
     # archives
     zip
@@ -89,6 +95,8 @@
     nodePackages.pnpm
     htop
     go
+    python3Full
+    python311Packages.pip
 
     # nix
     nix-index
@@ -96,6 +104,9 @@
     nixpkgs-fmt
 
     # system tools
+    gtk2
+    adwaita-qt
+    glaxnimate
     bottom
     procs
     monitor
