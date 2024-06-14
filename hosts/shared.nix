@@ -108,18 +108,21 @@
 
   # services.xserver.desktopManager.gnome.enable = true;
 
-  services.xserver = {
-    enable = true;
-    displayManager = {
-      sddm.enable = true;
-      sddm.theme = "${import ../theming/sddm-chili.nix {inherit pkgs;}}";
-      sddm.settings = {
-        Theme = {
-          EnableAvatars = true;
-          DisableAvatarsThreshold = 7;
-        };
+  services = {
+   displayManager = {
+    sddm.enable = true;
+    sddm.theme = "${import ../theming/sddm-chili.nix {inherit pkgs;}}";
+    sddm.settings = {
+      Theme = {
+        EnableAvatars = true;
+        DisableAvatarsThreshold = 7;
       };
     };
+   };
+  };
+
+  services.xserver = {
+    enable = true;
   };
   # Set default apps here
   xdg.mime.defaultApplications = {
@@ -137,8 +140,8 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Printing

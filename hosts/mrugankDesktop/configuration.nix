@@ -29,9 +29,11 @@
     "DP-2"
     "HDMI-A-1"
   ];
-
+ 
   # Enable AMDVLK
   hardware.amdgpu.amdvlk = true;
+
+  # 
 
   # Enable Openrazer
   hardware.openrazer.enable = true;
