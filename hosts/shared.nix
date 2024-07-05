@@ -119,7 +119,11 @@
           DisableAvatarsThreshold = 7;
         };
       };
+      defaultSession = "plasma";
     };
+   desktopManager = {
+     plasma6.enable = true;
+   };
   };
   # Set default apps here
   xdg.mime.defaultApplications = {
@@ -330,7 +334,7 @@
   # };
   programs = {
     zsh.enable = true;
-    hyprland.enable = true;
+    # hyprland.enable = true;
     steam = {
       enable = true;
       remotePlay.openFirewall = true;
@@ -341,6 +345,7 @@
     nm-applet.enable = true;
     kdeconnect.enable = true;
     java.enable = true;
+    dconf.enable = true;
   };
 
   # List services that you want to enable:
