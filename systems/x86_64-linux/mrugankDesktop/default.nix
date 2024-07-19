@@ -28,6 +28,13 @@ with lib.internal; {
   
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+  };
+
   networking.interfaces.enp4s0.wakeOnLan = {
     enable = true;
   };
@@ -37,12 +44,6 @@ with lib.internal; {
   #   package = pkgs.internal.alvr;
   #   openFirewall = true;
   # };
-
-  # Enable AMDVLK
-  hardware.amdgpu.amdvlk = {
-    enable = true;
-    support32Bit.enable = true;
-  };
 
   programs.corectrl = {
     enable = true;
