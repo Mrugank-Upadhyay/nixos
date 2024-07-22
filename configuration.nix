@@ -97,11 +97,7 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
-    #  vesktop
-    #  github-desktop
-    #  bruno
-    #  vscode-with-extensions
+     vscode-fhs
     ];
     shell = pkgs.zsh;
   };
@@ -109,90 +105,8 @@ in
   programs.zsh.enable = true;
 
   # Install firefox.
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-bin;
-    # profiles.mrugank = {
-    #   settings = {
-    #     "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable userChrome.css
-    #     "privacy.webrtc.hideGlobalIndicator" = true;
-    #     "media.ffmpeg.vaapi.enabled" = true;
-    #   };
-    #   search.engines = {
-    #     "Nix Packages" = {
-    #       urls = [
-    #         {
-    #           template = "https://search.nixos.org/packages";
-    #           params = [
-    #             {
-    #               name = "type";
-    #               value = "packages";
-    #             }
-    #             {
-    #               name = "channel";
-    #               value = "unstable";
-    #             }
-    #             {
-    #               name = "query";
-    #               value = "{searchTerms}";
-    #             }
-    #           ];
-    #         }
-    #       ];
-    #       icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-    #       definedAliases = ["np"];
-    #     };
-    #     "NixOS Wiki" = {
-    #       urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-    #       iconUpdateURL = "https://nixos.wiki/favicon.png";
-    #       updateInterval = 24 * 60 * 60 * 1000; # every day
-    #       definedAliases = ["nw"];
-    #     };
-    #     "Nix Options" = {
-    #       urls = [
-    #         {
-    #           template = "https://search.nixos.org/options";
-    #           params = [
-    #             {
-    #               name = "channel";
-    #               value = "unstable";
-    #             }
-    #             {
-    #               name = "query";
-    #               value = "{searchTerms}";
-    #             }
-    #           ];
-    #         }
-    #       ];
-    #       icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-    #       definedAliases = ["nop"];
-    #     };
-    #     "Home Manager Options" = {
-    #       urls = [
-    #         {
-    #           template = "https://home-manager-options.extranix.com/";
-    #           params = [
-    #             {
-    #               name = "query";
-    #               value = "{searchTerms}";
-    #             }
-    #             {
-    #               name = "release";
-    #               value = "master"; # unstable
-    #             }
-    #           ];
-    #         }
-    #       ];
-    #       icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-    #       definedAliases = ["hmop"];
-    #     };
-    #     "Bing".metaData.hidden = "true";
-    #   };
-    #   search.force = true;
-    #   search.default = "Google";
-    # };
-  };
-
+  programs.firefox.enable = true;
+  
   programs.neovim.enable = true;
   programs.neovim.defaultEditor = true;
   
@@ -271,7 +185,6 @@ in
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
-
       defaultEditor = true;
 
       # Packages to make available to Neovim
@@ -281,15 +194,20 @@ in
         nodejs
         lua-language-server
         luajitPackages.luarocks
+        ltex-ls
         stylua
         ripgrep
+        lazygit
+        gcc
       ];
+
+      plugins = [pkgs.vimPlugins.nvim-treesitter.withAllGrammars];
     };
 
     programs.starship = {
       enable = true;
       settings =
-        (with builtins; fromTOML (readFile /home/mrugank/nixos/modules/home/cli/starship/starship-nf-symbols.toml))
+        (with builtins; fromTOML (readFile ./starship-nf-symbols.toml))
         // {
           add_newline = true;
         };
@@ -377,6 +295,90 @@ in
         options = {
           side-by-side = true;
         };
+      };
+    };
+
+    programs.firefox = {
+      enable = true;
+      package = pkgs.firefox-bin;
+      profiles.mrugank = {
+        settings = {
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable userChrome.css
+          "privacy.webrtc.hideGlobalIndicator" = true;
+          "media.ffmpeg.vaapi.enabled" = true;
+        };
+        search.engines = {
+          "Nix Packages" = {
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "channel";
+                    value = "unstable";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = ["np"];
+          };
+          "NixOS Wiki" = {
+            urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
+            iconUpdateURL = "https://nixos.wiki/favicon.png";
+            updateInterval = 24 * 60 * 60 * 1000; # every day
+            definedAliases = ["nw"];
+          };
+          "Nix Options" = {
+            urls = [
+              {
+                template = "https://search.nixos.org/options";
+                params = [
+                  {
+                    name = "channel";
+                    value = "unstable";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
+            icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = ["nop"];
+          };
+          "Home Manager Options" = {
+            urls = [
+              {
+                template = "https://home-manager-options.extranix.com/";
+                params = [
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                  {
+                    name = "release";
+                    value = "master"; # unstable
+                  }
+                ];
+              }
+            ];
+            icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = ["hmop"];
+          };
+          "Bing".metaData.hidden = "true";
+        };
+        search.force = true;
+        search.default = "Google";
       };
     };
 
