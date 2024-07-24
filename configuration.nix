@@ -97,7 +97,6 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-     vscode-fhs
     ];
     shell = pkgs.zsh;
   };
@@ -129,6 +128,8 @@ in
       vesktop # Better Discord
       zoom-us
       vial # Keyboard Management
+      # dopamine # Music Audio Player (only in unstable branch, not in 24.05)
+      yt-dlp # CLI Audio/Video Downloader
     ];
 
 
@@ -382,7 +383,6 @@ in
       };
     };
 
-
     # Install Apps
     programs.rofi = {
       enable = true;
@@ -406,8 +406,36 @@ in
         kb-cancel = "Escape,Control+g,Control+bracketleft,Super+w";
       };
     };
+
+    programs.vscode = {
+      enable = true;
+      extensions = with pkgs.vscode-extensions; [
+        equinusocio.vsc-material-theme-icons
+        equinusocio.vsc-material-theme
+        eamodio.gitlens
+        ms-python.python
+        ms-python.vscode-pylance
+        ms-python.debugpy
+        # ms-python.pylint # Currently only available in unstable branch
+        ms-vscode.cpptools
+        ms-vscode.cpptools-extension-pack
+        ms-vscode.cmake-tools
+        formulahendry.auto-close-tag
+        formulahendry.auto-rename-tag
+        christian-kohler.npm-intellisense
+        esbenp.prettier-vscode
+        vincaslt.highlight-matching-tag
+      ];
+    };
+
     
     home.stateVersion = "24.05";
+  };
+
+
+  programs.direnv = {
+    enable = true;
+    silent = true;
   };
 
   fonts.packages = with pkgs; [
@@ -459,169 +487,20 @@ in
   #     };
   #   };
   # };
- # home-manager.useUserPackages = true;
- # home-manager.useGlobalPkgs = true;
- # home-manager.users.mrugank = with pkgs; {
- #    home.stateVersion = config.system.stateVersion or "24.05";
- #    home.packages = [
- #      rmtrash
- #    ];
- #    programs.home-manager = {
- #      enable = true;
- #      # useUserPackages = true;
- #      # useGlobalPkgs = true;
- #      # backupFileExtension = "backup";
- #    };
- #
- #    # Install ZSH and Integrations
- #    programs.command-not-found.enable = true;
- #    programs.zsh = {
- #      enable = true;
- #      autocd = true;
- #      dotDir = ".config/zsh";
- #      shellAliases = {
- #        ls = "eza";
- #        cat = "bat";
- #        cd = "z";
- #        rm = "rmtrash";
- #        rmdir = "rmdirtrash";
- #        ll = "ls -lah";
- #      };
- #      initExtraFirst = 
- #        ''
- #          autoload -U compinit && compinit
- #        '';
- #      enableCompletion = false;
- #      antidote = {
- #        enable = true;
- #        plugins = [
- #          "ohmyzsh/ohmyzsh path:lib/completion.zsh"
- #          "ohmyzsh/ohmyzsh path:plugins/gitfast"
- #          "ohmyzsh/ohmyzsh path:plugins/wd"
- #          "ohmyzsh/ohmyzsh path:plugins/command-not-found"
- #          "ohmyzsh/ohmyzsh path:plugins/compleat"
- #          "ohmyzsh/ohmyzsh path:plugins/pip"
- #          "ohmyzsh/ohmyzsh path:plugins/npm"
- #          "ohmyzsh/ohmyzsh path:plugins/history"
- #          "zsh-users/zsh-autosuggestions"
- #          "zsh-users/zsh-syntax-highlighting"
- #          "ael-code/zsh-colored-man-pages"
- #          "chisui/zsh-nix-shell path:nix-shell.plugin.zsh"
- #        ];
- #      };
- #    };
- #    programs.bat.enable = true;
- #    # defaultUserShell = pkgs.zsh;
- #    
- #    programs.eza = {
- #      enable = true;
- #      icons = true;
- #    };
- #
- #    programs.gh = {
- #        enable = true;
- #        gitCredentialHelper.enable = true;
- #      };
- #      programs.git-credential-oauth.enable = true;
- #      programs.git = {
- #        enable = true;
- #        package = pkgs.gitFull;
- #
- #        userName = "Mrugank";
- #        userEmail = "mrugank2@gmail.com";
- #
- #        extraConfig = {
- #          color.ui = "auto";
- #          push = {
- #            autoSetupRemote = true;
- #          };
- #        };
- #
- #        delta = {
- #          enable = true;
- #          options = {
- #            side-by-side = true;
- #          };
- #        };
- #      };
- #    
- #    programs.neovim = {
- #      enable = true;
- #      viAlias = true;
- #      vimAlias = true;
- #      vimdiffAlias = true;
- #      defaultEditor = true;
- #
- #      # Packages to make available to Neovim
- #      extraPackages = with pkgs; [
- #        nil
- #        nixd
- #        nodejs
- #        lua-language-server
- #        luajitPackages.luarocks
- #        stylua
- #        ripgrep
- #      ];
- #    };
- #
- #    programs.starship = {
- #      enable = true;
- #      settings =
- #        (with builtins; fromTOML (readFile /home/mrugank/nixos/modules/home/cli/starship/starship-nf-symbols.toml))
- #        // {
- #          add_newline = true;
- #        };
- #    };
- #
- #    programs.zoxide = {
- #      enable = true;
- #      enableZshIntegration = true;
- #    };
- #    programs.kitty = {
- #      enable = true;
- #      settings = {
- #        background_opacity = "85";
- #        font_size = "12.0";
- #        # Bell
- #        enable_audio_bell = "no";
- #        visual_bell_duration = "0.1";
- #        window_alert_on_bell = "yes";
- #
- #        # Window
- #        remember_window_size = "yes";
- #        initial_window_width = 640;
- #        initial_window_height = 400;
- #        window_padding_width = "0.5";
- #        confirm_os_window_close = 0;
- #
- #        # Cursor
- #        cursor_shape = "beam";
- #
- #        # Remote control
- #        allow_remote_control = "socket-only";
- #        listen_on = "unix:/tmp/kitty";
- #      };
- #
- #      keybindings = {
- #        "ctrl+plus" = "change_font_size all +1.0";
- #        "ctrl+minus" = "change_font_size all -1.0";
- #        "ctrl+equal" = "change_font_size all 12.0";
- #        "super+shift+enter" = "launch --type=os-window --cwd=current";
- #      };
- #
- #      shellIntegration = {
- #        enableZshIntegration = true;
- #      };
- #
- #      theme = "Catppuccin-Mocha";
- #    };
- #  };
-  #
-  # programs.neovim.enable = true;
-  # programs.neovim.defaultEditor = true;
+
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Steam config
+  programs.steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
+    localNetworkGameTransfers.openFirewall = true;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -634,12 +513,20 @@ in
     git
     bat
     eza
+     vscode-fhs
     trash-cli
     zoxide
     starship
     rmtrash
     libgcc
     neofetch
+    wineWowPackages.stable
+    wineWowPackages.waylandFull
+    winetricks
+    lutris
+    protontricks
+    fzf
+    python311Packages.pip
   ];
  
   
