@@ -18,6 +18,7 @@
     vial # Keyboard Management
     # dopamine # Music Audio Player (only in unstable branch, not in 24.05)
     yt-dlp # CLI Audio/Video Downloader
+    obsidian
   ];
 
 
@@ -36,6 +37,8 @@
       rm = "rmtrash";
       rmdir = "rmdirtrash";
       ll = "ls -lah";
+      ddc-dp = "sudo ddcutil -d 2 setvcp 10";
+      ddc-hd = "sudo ddcutil -d 1 setvcp 10";
     };
     initExtraFirst = 
       ''
