@@ -39,6 +39,8 @@
       ll = "ls -lah";
       ddc-dp = "sudo ddcutil -d 2 setvcp 10";
       ddc-hd = "sudo ddcutil -d 1 setvcp 10";
+      npm = "pnpm";
+      npx = "pnpm dlx";
     };
     initExtraFirst = 
       ''
@@ -180,6 +182,7 @@
       push = {
         autoSetupRemote = true;
       };
+      pull.ff = "only";
     };
 
     delta = {
