@@ -75,10 +75,10 @@ in
   hardware.bluetooth.enable = true;
 
 
-  hardware.amdgpu.amdvlk = {
-    enable = true;
-    support32Bit.enable = true;
-  };
+  # hardware.amdgpu.amdvlk = {
+  #   enable = true;
+  #   support32Bit.enable = true;
+  # };
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
