@@ -322,6 +322,10 @@
     ];
   };
 
+  services.kdeconnect.package = pkgs.kdePackages.kdeconnect-kde;
+  services.kdeconnect.enable = true;
+  services.kdeconnect.indicator = true;
+
   
   home.stateVersion = "24.05";
 }
