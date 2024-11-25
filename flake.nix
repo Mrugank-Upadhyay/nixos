@@ -51,13 +51,24 @@
           home-manager.useGlobalPkgs = true;
           home-manager.backupFileExtension = "hm-backup";
           home-manager.users.mrugank = import ./home.nix;
-         }
+        }
       ];
     };
-    
+     
     systems.modules.nixos = with inputs; [
       home-manager.nixosModules.home-manager
     ];
-
+    nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration-homelab.nix
+        home-manager.nixosModules.home-manager {
+          home-manager.useUserPackages = true;
+          home-manager.useGlobalPkgs = true;
+          home-manager.backupFileExtension = "hm-homelab-backup";
+	  home-manager.users.homelab = import ./home-homelab.nix;
+        }
+      ];
+    };
   };
 }
