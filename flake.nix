@@ -44,7 +44,7 @@
     nixosConfigurations.mrugankDesktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./configuration.nix
+        ./desktop-config/configuration.nix
         # (import ./overlays)
         home-manager.nixosModules.home-manager {
           home-manager.useUserPackages = true;
@@ -61,12 +61,12 @@
     nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
-        ./configuration-homelab.nix
+        ./homelab-config/configuration-homelab.nix
         home-manager.nixosModules.home-manager {
           home-manager.useUserPackages = true;
           home-manager.useGlobalPkgs = true;
           home-manager.backupFileExtension = "hm-homelab-backup";
-	  home-manager.users.homelab = import ./home-homelab.nix;
+	  home-manager.users.homelab = import ./homelab-config/home-homelab.nix;
         }
       ];
     };

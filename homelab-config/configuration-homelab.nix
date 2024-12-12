@@ -139,6 +139,8 @@
     kitty
     cockpit # Web-based graphical interface for servers
     kexec-tools
+    pnpm
+    nodejs_22
   ];
 
   # SSH Agent
@@ -164,6 +166,9 @@
     };
   };
   
+  # Homepage Dashboard
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
