@@ -116,6 +116,7 @@ in
     packages = with pkgs; [
       kdePackages.kate
       nodejs_22
+      protonvpn-gui
     ];
     shell = pkgs.zsh;
   };

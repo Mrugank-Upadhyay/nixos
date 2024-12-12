@@ -41,6 +41,7 @@
       ddc-hd = "sudo ddcutil -d 1 setvcp 10";
       npm = "pnpm";
       npx = "pnpm dlx";
+      ssh-homelab = "ssh homelab@192.168.2.48";
     };
     initExtraFirst = 
       ''
@@ -71,7 +72,7 @@
   
   programs.eza = {
     enable = true;
-    icons = true;
+    icons = "auto";
   };
 
   programs.neovim = {
