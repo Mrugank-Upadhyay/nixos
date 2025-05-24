@@ -14,7 +14,7 @@ let
       rev = "...";
       sha256 = "...";
   };
-  themes = pkgs.callPackage ./sddm-themes.nix {}; 
+  themes = pkgs.callPackage ../sddm-themes.nix {}; 
 in
 {
   imports =
@@ -43,7 +43,7 @@ in
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Toronto";
+  time.timeZone = "America/Los_Angeles";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
@@ -73,6 +73,10 @@ in
 
   # Enable Bluetooth
   hardware.bluetooth.enable = true;
+
+  # Drawing tablet
+  hardware.opentabletdriver.enable = true;
+  hardware.opentabletdriver.daemon.enable = true;
 
 
   # hardware.amdgpu.amdvlk = {
@@ -117,6 +121,8 @@ in
       kdePackages.kate
       nodejs_22
       protonvpn-gui
+      opentabletdriver
+      xournalpp
     ];
     shell = pkgs.zsh;
   };
