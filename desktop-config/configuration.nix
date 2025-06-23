@@ -127,6 +127,7 @@ in
     shell = pkgs.zsh;
   };
   
+
   programs.zsh.enable = true;
 
   # Install firefox.

@@ -41,7 +41,7 @@
       ddc-hd = "sudo ddcutil -d 1 setvcp 10";
       npm = "pnpm";
       npx = "pnpm dlx";
-      ssh-homelab = "ssh homelab@192.168.2.48";
+      ssh-homelab = "ssh homelab@192.168.1.145";
     };
     initExtraFirst = 
       ''
@@ -305,8 +305,8 @@
   programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [
-      equinusocio.vsc-material-theme-icons
-      equinusocio.vsc-material-theme
+      # equinusocio.vsc-material-theme-icons # Marked Malicious on Nixpkgs, need to find alternative
+      # equinusocio.vsc-material-theme
       eamodio.gitlens
       ms-python.python
       ms-python.vscode-pylance
