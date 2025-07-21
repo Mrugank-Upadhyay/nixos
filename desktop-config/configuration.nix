@@ -1,6 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# and in the NixOS manual (accessible by running 'nixos-help').
 
 { config, pkgs, ... }:
 let
@@ -8,13 +8,6 @@ let
   #   url = "https://github.com/nix-community/home-manager/archive/master.tar.gz"
   #   sha256 = 
   # };
-  stylix = pkgs.fetchFromGithub {
-    owner = "danth";
-      repo = "stylix";
-      rev = "...";
-      sha256 = "...";
-  };
-  themes = pkgs.callPackage ../sddm-themes.nix {}; 
 in
 {
   imports =
@@ -105,7 +98,7 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.mrugank = {
     isNormalUser = true;
     description = "Mrugank";
@@ -123,6 +116,7 @@ in
       protonvpn-gui
       opentabletdriver
       xournalpp
+      code-cursor-fhs
     ];
     shell = pkgs.zsh;
   };
@@ -144,55 +138,11 @@ in
   };
 
   fonts.packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "Hasklig"
-          "Iosevka"
-          "VictorMono"
-        ];
-      })
-    ];
-
-  # stylix = {
-  #   enable = true;
-  #   image = "/home/mrugank/Pictures/The-Neon-Shallows.jpg";
-  #   autoEnable = false;
-  #   polarity = "dark";
-  #   base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
-  #   
-  #   opacity.terminal = 0.8;
-  #   
-  #   # targets = {
-  #   #   vesktop.enable = true;
-  #   # };
-  #
-  #   fonts = {
-  #     sizes = {
-  #       applications = 12;
-  #       desktop = 10;
-  #       popups = 10;
-  #       terminal = 12;
-  #     };
-  #     sansSerif = {
-  #       package = pkgs.inter;
-  #       name = "Inter";
-  #     };
-  #     serif = {
-  #       package = pkgs.roboto-slab;
-  #       name = "Roboto Slab";
-  #     };
-  #     monospace = {
-  #       package = pkgs.nerdfonts.override {
-  #         fonts = [
-  #           "CascadiaCode"
-  #         ];
-  #       };
-  #       name = "CaskaydiaCove Nerd Font";
-  #     };
-  #   };
-  # };
-
+    nerd-fonts.fira-code
+    nerd-fonts.hasklug
+    nerd-fonts.iosevka
+    nerd-fonts.victor-mono
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -237,6 +187,7 @@ in
     xclip
     themes.sddm-astronaut-theme
     pnpm
+    kdePackages.plasma-nm
     # ddcutil
   ];
 
@@ -278,7 +229,7 @@ in
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).

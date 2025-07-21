@@ -46,6 +46,13 @@
       modules = [
         ./desktop-config/configuration.nix
         # (import ./overlays)
+        {
+          nixpkgs.overlays = [
+            (final: prev: {
+              themes = prev.callPackage ./sddm-themes/sddm-themes.nix {};
+            })
+          ];
+        }
         home-manager.nixosModules.home-manager {
           home-manager.useUserPackages = true;
           home-manager.useGlobalPkgs = true;

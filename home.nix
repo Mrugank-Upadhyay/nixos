@@ -9,9 +9,9 @@
   home.packages = with pkgs; [
     github-desktop
     bruno # HTTP Client
-    beekeeper-studio # Database Data Management
-    gnome.nautilus # File Manager
-    gnome.gnome-calculator # Calculator
+    # beekeeper-studio # Database Data Management, currently marked insecure. Need alternative
+    nautilus # File Manager
+    gnome-calculator # Calculator
     mpv # Video/Music Player
     vesktop # Better Discord
     zoom-us
@@ -42,6 +42,7 @@
       npm = "pnpm";
       npx = "pnpm dlx";
       ssh-homelab = "ssh homelab@192.168.1.145";
+      ssh-vps = "ssh ubuntu@192.9.147.141";
     };
     initExtraFirst = 
       ''
