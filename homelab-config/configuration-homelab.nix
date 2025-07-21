@@ -141,6 +141,7 @@
     kexec-tools
     pnpm
     nodejs_22
+    packagekit
   ];
 
   # SSH Agent
@@ -166,6 +167,8 @@
     };
   };
   
+  services.packagekit.enable = true;
+
   # Homepage Dashboard
 
 
