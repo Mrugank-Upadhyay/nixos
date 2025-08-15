@@ -188,6 +188,7 @@ in
     themes.sddm-astronaut-theme
     pnpm
     kdePackages.plasma-nm
+    zathura
     # ddcutil
   ];
 
@@ -226,6 +227,10 @@ in
     ];
   };
 
+  # Allow Virtualization
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
+  boot.kernelParams = [ "kvm.enable_virt_at_load=0" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
