@@ -61,6 +61,16 @@ in
     xkbVariant = "";
   };
 
+  # Manga Reader
+  services.suwayomi-server = {
+    enable = true;
+    settings = {
+      server.port = 4567;
+      server.enableSystemTray = true;
+    };
+  };
+
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -117,6 +127,7 @@ in
       opentabletdriver
       xournalpp
       code-cursor-fhs
+      mangayomi
     ];
     shell = pkgs.zsh;
   };
