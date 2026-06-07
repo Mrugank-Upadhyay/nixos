@@ -18,10 +18,27 @@ in
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
-  boot.loader.timeout = 30;
-  boot.loader.efi.canTouchEfiVariables = true;
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.systemd-boot.configurationLimit = 5;
+  #boot.loader.timeout = 30;
+  #boot.loader.efi.canTouchEfiVariables = true;
+
+  # Grub due to new SSDs configuration
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      enable = true;
+      efiSupport = true;
+      device = "nodev";
+      useOSProber = true;
+    };
+  };
+
+  # Use latest kernel packages
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "mrugankDesktop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -128,6 +145,7 @@ in
       xournalpp
       code-cursor-fhs
       mangayomi
+      claude-code
     ];
     shell = pkgs.zsh;
   };
