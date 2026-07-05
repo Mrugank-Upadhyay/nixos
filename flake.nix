@@ -37,9 +37,18 @@
 
     # Themes
     stylix.url = "github:danth/stylix";
+
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Raycast Alternative
+    vicinae.url = "github:vicinaehq/vicinae";
+    vicinae-extensions.url = "github:vicinaehq/extensions";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ...} : {
+  outputs = inputs@{ nixpkgs, home-manager, vicinae, ...} : {
 
     nixosConfigurations.mrugankDesktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -48,6 +57,7 @@
         # (import ./overlays)
         {
           nixpkgs.overlays = [
+            inputs.nix-vscode-extensions.overlays.default
             (final: prev: {
               themes = prev.callPackage ./sddm-themes/sddm-themes.nix {};
             })
@@ -57,8 +67,11 @@
           home-manager.useUserPackages = true;
           home-manager.useGlobalPkgs = true;
           home-manager.backupFileExtension = "hm-backup";
+          home-manager.extraSpecialArgs = { inherit inputs; };
+          home-manager.sharedModules = [ vicinae.homeManagerModules.default ];
           home-manager.users.mrugank = import ./home.nix;
         }
+	vicinae.nixosModules.default
       ];
     };
      

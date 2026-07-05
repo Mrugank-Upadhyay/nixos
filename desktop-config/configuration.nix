@@ -34,6 +34,16 @@ in
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
+      configurationLimit = 5;
+      timeout = 30;
+      theme = "${
+        (pkgs.fetchFromGitHub {
+          owner = "Flava-Clown";
+          repo = "AstronautGrub";
+          rev = "astronaut_grub_theme";
+          hash = "sha256-OlM3/1XPbQFsSsaTIzl6OaczVPxbQxfS3V8blgSnoms=";
+        })
+      }/astronaut_orange";
     };
   };
 
@@ -107,6 +117,11 @@ in
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
+
+  security.pam.services.sddm.kwallet = {
+    enable = true;
+    package = pkgs.kdePackages.kwallet-pam;
+  };
   services.pipewire = {
     enable = true;
      alsa.enable = true;
@@ -203,14 +218,9 @@ in
     starship
     rmtrash
     libgcc
-    neofetch
-    wineWowPackages.stable
-    wineWowPackages.waylandFull
-    winetricks
-    lutris
-    protontricks
+    fastfetch
     fzf
-    python311Packages.pip
+    python312Packages.pip
     lact
     openssh
     xclip

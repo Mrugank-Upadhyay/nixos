@@ -132,7 +132,6 @@
     zoxide
     rmtrash
     libgcc
-    neofetch
     fzf
     openssh
     xclip

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   home.username = "mrugank";
@@ -66,6 +66,11 @@
         "chisui/zsh-nix-shell path:nix-shell.plugin.zsh"
       ];
     };
+    initExtra = pkgs.lib.mkAfter ''
+      # Fix CTRL+R history search (Oh My Zsh uses vi-mode default)
+      bindkey -M viins '^R' history-incremental-search-backward
+      bindkey -M vicmd '^R' history-incremental-search-backward
+    '';
   };
 
   programs.bat.enable = true;
@@ -282,7 +287,7 @@
   # Install Apps
   programs.rofi = {
     enable = true;
-    package = pkgs.rofi-wayland;
+    package = pkgs.rofi;
     font = "monospace 12";
     extraConfig = {
       modi = "drun,filebrowser";
@@ -305,28 +310,124 @@
 
   programs.vscode = {
     enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      # equinusocio.vsc-material-theme-icons # Marked Malicious on Nixpkgs, need to find alternative
-      # equinusocio.vsc-material-theme
-      eamodio.gitlens
-      ms-python.python
-      ms-python.vscode-pylance
-      ms-python.debugpy
-      # ms-python.pylint # Currently only available in unstable branch
-      ms-vscode.cpptools
-      ms-vscode.cpptools-extension-pack
-      ms-vscode.cmake-tools
-      formulahendry.auto-close-tag
-      formulahendry.auto-rename-tag
-      christian-kohler.npm-intellisense
-      esbenp.prettier-vscode
-      vincaslt.highlight-matching-tag
-    ];
+    #package = pkgs.vscode.fhs;
+    extensions =
+      (with pkgs.vscode-extensions; [
+      	arrterian.nix-env-selector
+	bradlc.vscode-tailwindcss
+	christian-kohler.npm-intellisense
+	eamodio.gitlens
+	esbenp.prettier-vscode
+	formulahendry.auto-close-tag
+	formulahendry.auto-rename-tag
+	mechatroner.rainbow-csv
+	mkhl.direnv
+	ms-python.debugpy
+	ms-python.pylint
+	ms-python.vscode-pylance
+	ms-toolsai.jupyter
+	ms-toolsai.jupyter-keymap
+	ms-toolsai.jupyter-renderers
+	ms-toolsai.vscode-jupyter-cell-tags
+	ms-toolsai.vscode-jupyter-slideshow
+	ms-vscode-remote.remote-ssh
+	ms-vscode-remote.remote-ssh-edit
+	ms-vscode.cmake-tools
+	ms-vscode.cpptools
+	ms-vscode.cpptools-extension-pack
+	ms-vscode.remote-explorer
+	vincaslt.highlight-matching-tag
+      ])
+      ++ (with pkgs.vscode-marketplace; [
+        austenc.tailwind-docs
+        ms-python.vscode-python-envs
+    	ms-vscode.cpp-devtools
+    	stivo.tailwind-fold
+    	wayou.vscode-todo-highlight
+    	yatki.vscode-surround
+      ])
+      ++ [ pkgs.vscode-marketplace."076923".python-image-preview ];
+    userSettings = {
+      "update.mode" = "none";
+      "extensions.autoUpdate" = false;
+      "extensions.autoCheckUpdates" = false;
+      "telemetry.telemetryLevel" = "off";
+      "notebook.lineNumbers" = "on";
+      "notebook.cellToolbarLocation" = {
+        "default" = "right";
+	"jupyter-notebook" = "right";
+      };
+      "notebook.output.scrolling" = true;
+      "workbench.settings.applyToAllProfiles" = [ "notebook.output.scrolling" ];
+      "jupyter.widgetScriptSources" = [ "jsdelivr.com" "unpkg.com" ];
+      "tailwind-fold.autoFold" = false;
+      "editor.tabSize" = 2;
+      "security.workspace.trust.enabled" = false;
+      "surround.custom" = {
+        "Suspense" = {
+	  "label" = "Suspense";
+	  "description" = "<Suspense> { Children } </Suspense>";
+	  "snippet" = "<Suspense>\n\t$TM_SELECTED_TEXT\n</Suspense>$0";
+	  "languageIds" = [ "javascriptreact" "typescriptreact" ];
+	};
+	"Element New Line" = {
+	  "label" = "<element>\n</element>";
+	  "description" = "<element>\n</element>";
+	  "disabled" = false;
+	  "snippet" = "<\${1}$2>\n\t$TM_SELECTED_TEXT\n</$1>$0";
+	  "languageIds" = [ "html" "typescriptreact" "javascriptreact" "jsx" "markdown" ];
+	};
+      };
+    };
   };
 
 
   programs.zathura = {
     enable = true;
+  };
+
+  programs.vicinae = {
+    enable = true;
+    systemd = {
+      enable = true;
+      autoStart = true;
+      environment = {
+        USE_LAYER_SHELL = 1;
+      };
+    };
+    settings = {
+      close_on_focus_loss = true;
+      consider_preedit = true;
+      pop_to_root_on_close = true;
+      favicon_service = "twenty";
+      search_files_in_root = true;
+      font = {
+        normal = {
+          size = 12;
+          family = "Maple Nerd Font";
+        };
+      };
+      theme = {
+        light = {
+          name = "vicinae-light";
+          icon_theme = "default";
+        };
+        dark = {
+          name = "tokyo-night-storm";
+          icon_theme = "default";
+        };
+      };
+      launcher_window = {
+        opacity = 0.95;
+        material = "none";
+      };
+    };
+    extensions = with inputs.vicinae-extensions.packages.${pkgs.stdenv.hostPlatform.system}; [
+       wifi-commander
+       nix
+       power-profile
+      # Extension names can be found in the link below, it's just the folder names
+    ];
   };
 
   services.kdeconnect.package = pkgs.kdePackages.kdeconnect-kde;
