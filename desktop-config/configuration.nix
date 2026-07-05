@@ -25,6 +25,7 @@ in
 
   # Grub due to new SSDs configuration
   boot.loader = {
+    timeout = 30;
     efi = {
       canTouchEfiVariables = true;
       efiSysMountPoint = "/boot";
@@ -35,7 +36,6 @@ in
       device = "nodev";
       useOSProber = true;
       configurationLimit = 5;
-      timeout = 30;
       theme = "${
         (pkgs.fetchFromGitHub {
           owner = "Flava-Clown";
@@ -83,9 +83,9 @@ in
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "";
+    variant = "";
   };
 
   # Manga Reader
@@ -115,7 +115,7 @@ in
   # };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
   security.pam.services.sddm.kwallet = {
@@ -155,7 +155,7 @@ in
     packages = with pkgs; [
       kdePackages.kate
       nodejs_22
-      protonvpn-gui
+      proton-vpn
       opentabletdriver
       xournalpp
       code-cursor-fhs

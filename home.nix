@@ -29,7 +29,7 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     shellAliases = {
       ls = "eza";
       cat = "bat";
@@ -44,10 +44,6 @@
       ssh-homelab = "ssh homelab@192.168.1.145";
       ssh-vps = "ssh ubuntu@192.9.147.141";
     };
-    initExtraFirst = 
-      ''
-        autoload -U compinit && compinit
-      '';
     enableCompletion = false;
     antidote = {
       enable = true;
@@ -66,11 +62,16 @@
         "chisui/zsh-nix-shell path:nix-shell.plugin.zsh"
       ];
     };
-    initExtra = pkgs.lib.mkAfter ''
-      # Fix CTRL+R history search (Oh My Zsh uses vi-mode default)
-      bindkey -M viins '^R' history-incremental-search-backward
-      bindkey -M vicmd '^R' history-incremental-search-backward
-    '';
+    initContent = pkgs.lib.mkMerge [
+      (pkgs.lib.mkBefore ''
+        autoload -U compinit && compinit
+      '')
+      (pkgs.lib.mkAfter ''
+        # Fix CTRL+R history search (Oh My Zsh uses vi-mode default)
+        bindkey -M viins '^R' history-incremental-search-backward
+        bindkey -M vicmd '^R' history-incremental-search-backward
+      '')
+    ];
   };
 
   programs.bat.enable = true;
@@ -87,6 +88,8 @@
     vimAlias = true;
     vimdiffAlias = true;
     defaultEditor = true;
+    withRuby = true;
+    withPython3 = true;
 
     # Packages to make available to Neovim
     extraPackages = with pkgs; [
@@ -167,7 +170,7 @@
       enableZshIntegration = true;
     };
 
-    theme = "Catppuccin-Mocha";
+    themeFile = "Catppuccin-Mocha";
   };
 
 
@@ -181,22 +184,24 @@
     enable = true;
     package = pkgs.gitFull;
     
-    userName = "Mrugank Upadhyay";
-    userEmail = "mrugank2@gmail.com";
-
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Mrugank Upadhyay";
+        email = "mrugank2@gmail.com";
+      };
       color.ui = "auto";
       push = {
         autoSetupRemote = true;
       };
       pull.ff = "only";
     };
+  };
 
-    delta = {
-      enable = true;
-      options = {
-        side-by-side = true;
-      };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      side-by-side = true;
     };
   };
 
@@ -235,7 +240,7 @@
         };
         "NixOS Wiki" = {
           urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
-          iconUpdateURL = "https://nixos.wiki/favicon.png";
+          icon = "https://nixos.wiki/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = ["nw"];
         };
@@ -277,10 +282,10 @@
           icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
           definedAliases = ["hmop"];
         };
-        "Bing".metaData.hidden = "true";
+        "bing".metaData.hidden = "true";
       };
       search.force = true;
-      search.default = "Google";
+      search.default = "google";
     };
   };
 
@@ -311,7 +316,7 @@
   programs.vscode = {
     enable = true;
     #package = pkgs.vscode.fhs;
-    extensions =
+    profiles.default.extensions =
       (with pkgs.vscode-extensions; [
       	arrterian.nix-env-selector
 	bradlc.vscode-tailwindcss
@@ -347,7 +352,7 @@
     	yatki.vscode-surround
       ])
       ++ [ pkgs.vscode-marketplace."076923".python-image-preview ];
-    userSettings = {
+    profiles.default.userSettings = {
       "update.mode" = "none";
       "extensions.autoUpdate" = false;
       "extensions.autoCheckUpdates" = false;
