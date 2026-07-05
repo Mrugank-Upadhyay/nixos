@@ -1,5 +1,5 @@
 {
-  description = "Mrugank's NixOS flake";
+  description = "A very basic flake";
 
   nixConfig = {
     substituters = [
@@ -11,21 +11,21 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
-    snowfall-lib = {
-      url = "github:snowfallorg/lib?ref=dev";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    snowfall-flake = {
-      url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    snowfall-thaw = {
-      url = "github:snowfallorg/thaw";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    # snowfall-lib = {
+    #   url = "github:snowfallorg/lib?ref=dev";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # snowfall-flake = {
+    #   url = "github:snowfallorg/flake";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # snowfall-thaw = {
+    #   url = "github:snowfallorg/thaw";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+  
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,56 +33,62 @@
 
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
 
-    # nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
-
     nix-gaming.url = "github:fufexan/nix-gaming";
 
     # Themes
     stylix.url = "github:danth/stylix";
-    catppuccin.url = "github:catppuccin/nix";
+
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Raycast Alternative
+    vicinae.url = "github:vicinaehq/vicinae";
+    vicinae-extensions.url = "github:vicinaehq/extensions";
   };
 
-  outputs = inputs: let
-    lib = inputs.snowfall-lib.mkLib {
-      inherit inputs;
-      src = ./.;
+  outputs = inputs@{ nixpkgs, home-manager, vicinae, ...} : {
+
+    nixosConfigurations.mrugankDesktop = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./desktop-config/configuration.nix
+        # (import ./overlays)
+        {
+          nixpkgs.overlays = [
+            inputs.nix-vscode-extensions.overlays.default
+            (final: prev: {
+              themes = prev.callPackage ./sddm-themes/sddm-themes.nix {};
+            })
+          ];
+        }
+        home-manager.nixosModules.home-manager {
+          home-manager.useUserPackages = true;
+          home-manager.useGlobalPkgs = true;
+          home-manager.backupFileExtension = "hm-backup";
+          home-manager.extraSpecialArgs = { inherit inputs; };
+          home-manager.sharedModules = [ vicinae.homeManagerModules.default ];
+          home-manager.users.mrugank = import ./home.nix;
+        }
+	vicinae.nixosModules.default
+      ];
     };
-  in
-    lib.mkFlake {
-      channels-config = {
-        allowUnfree = true;
-        permittedInsecurePackages = [];
-      };
-
-      overlays = with inputs; [
-        snowfall-flake.overlays.default
-        snowfall-thaw.overlays.default
+     
+    systems.modules.nixos = with inputs; [
+      home-manager.nixosModules.home-manager
+    ];
+    nixosConfigurations.homelab = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./homelab-config/configuration-homelab.nix
+        home-manager.nixosModules.home-manager {
+          home-manager.useUserPackages = true;
+          home-manager.useGlobalPkgs = true;
+          home-manager.backupFileExtension = "hm-homelab-backup";
+	  home-manager.users.homelab = import ./homelab-config/home-homelab.nix;
+        }
       ];
-
-      homes.modules = with inputs; [
-        catppuccin.homeManagerModules.catppuccin
-      ];
-
-      systems.modules.nixos = with inputs; [
-        home-manager.nixosModules.home-manager
-        stylix.nixosModules.stylix
-        catppuccin.nixosModules.catppuccin
-      ];
-
-      systems.hosts.mrugankDesktop.modules = with inputs; [
-        nixos-hardware.nixosModules.common-cpu-amd
-        nixos-hardware.nixosModules.common-cpu-amd-pstate
-        nixos-hardware.nixosModules.common-gpu-amd
-        nixos-hardware.nixosModules.common-pc-ssd
-        nix-gaming.nixosModules.pipewireLowLatency
-      ];
-
-      # systems.hosts.mrugankLaptop.modules = with inputs; [
-      #   nixos-hardware.nixosModules.lenovo-thinkpad-t480
-      # ];
-
-      # deploy = lib.mkDeploy {
-      #   inherit (inputs) self;
-      # };
     };
+  };
 }
