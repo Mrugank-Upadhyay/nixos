@@ -6,6 +6,11 @@
   home.username = "mrugank";
   home.homeDirectory = "/home/mrugank";
 
+  # Registers `use devenv` for direnv (see dev-env-templates/*/.envrc)
+  xdg.configFile."direnv/direnvrc".text = ''
+    eval "$(devenv direnvrc)"
+  '';
+
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
