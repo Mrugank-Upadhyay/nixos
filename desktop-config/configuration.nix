@@ -220,7 +220,6 @@ in
     libgcc
     fastfetch
     fzf
-    python312Packages.pip
     lact
     openssh
     xclip

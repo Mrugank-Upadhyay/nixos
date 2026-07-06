@@ -12,7 +12,6 @@
   in {
     devShells.${system} = {
       default = import ./webdev.nix { inherit pkgs; };
-      python = import ./python.nix { inherit pkgs; };
     };
   };
 }

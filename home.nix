@@ -1,6 +1,8 @@
 { config, pkgs, inputs, ... }:
 
 {
+  imports = [ ./nvim.nix ];
+
   home.username = "mrugank";
   home.homeDirectory = "/home/mrugank";
 
@@ -8,6 +10,9 @@
 
   home.packages = with pkgs; [
     github-desktop
+    ripgrep
+    lazygit
+    gcc
     bruno # HTTP Client
     # beekeeper-studio # Database Data Management, currently marked insecure. Need alternative
     nautilus # File Manager
@@ -19,6 +24,7 @@
     # dopamine # Music Audio Player (only in unstable branch, not in 24.05)
     yt-dlp # CLI Audio/Video Downloader
     obsidian
+    devenv # Per-project dev environments
   ];
 
 
@@ -70,6 +76,19 @@
         # Fix CTRL+R history search (Oh My Zsh uses vi-mode default)
         bindkey -M viins '^R' history-incremental-search-backward
         bindkey -M vicmd '^R' history-incremental-search-backward
+
+        # Copy a devenv template (from dev-env-templates/<name>-devenv-template)
+        # into the current directory and activate it. Defaults to "python".
+        devenv-init() {
+          local template="''${1:-python}"
+          local src="$HOME/nixos/dev-env-templates/''${template}-devenv-template"
+          if [[ ! -d "$src" ]]; then
+            echo "No devenv template found at $src"
+            return 1
+          fi
+          cp -rn "$src"/. .
+          direnv allow
+        }
       '')
     ];
   };
@@ -80,32 +99,6 @@
   programs.eza = {
     enable = true;
     icons = "auto";
-  };
-
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-    defaultEditor = true;
-    withRuby = true;
-    withPython3 = true;
-
-    # Packages to make available to Neovim
-    extraPackages = with pkgs; [
-      nil
-      nixd
-      nodejs
-      lua-language-server
-      luajitPackages.luarocks
-      ltex-ls
-      stylua
-      ripgrep
-      lazygit
-      gcc
-    ];
-
-    plugins = [pkgs.vimPlugins.nvim-treesitter.withAllGrammars];
   };
 
   programs.starship = {
