@@ -348,6 +348,8 @@
     	stivo.tailwind-fold
     	wayou.vscode-todo-highlight
     	yatki.vscode-surround
+    	whizkydee.material-palenight-theme
+    	catppuccin.catppuccin-vsc
       ])
       ++ [ pkgs.vscode-marketplace."076923".python-image-preview ];
     profiles.default.userSettings = {
@@ -355,6 +357,17 @@
       "extensions.autoUpdate" = false;
       "extensions.autoCheckUpdates" = false;
       "telemetry.telemetryLevel" = "off";
+      "workbench.colorTheme" = "Catppuccin Mocha";
+      "workbench.colorCustomizations" = {
+        # the installed catppuccin-vsc release (nix-vscode-extensions is pinned
+        # to an old registry snapshot) ships an unpadded alpha hex here
+        # ("#cdd6f4c" instead of "#cdd6f412"), which VS Code's color parser
+        # falls back to solid red for. Value matches upstream's intended
+        # opacity(palette.text, 0.07) for Mocha.
+        "[Catppuccin Mocha]" = {
+          "editor.lineHighlightBackground" = "#cdd6f412";
+        };
+      };
       "notebook.lineNumbers" = "on";
       "notebook.cellToolbarLocation" = {
         "default" = "right";

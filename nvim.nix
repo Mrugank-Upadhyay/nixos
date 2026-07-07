@@ -43,6 +43,18 @@
         ];
       };
       filetree.nvimTree.enable = true;
+
+      luaConfigRC.nvimTreeAutoClose = ''
+        -- Close nvim-tree automatically if it's the last window left open
+        vim.api.nvim_create_autocmd("BufEnter", {
+          nested = true,
+          callback = function()
+            if #vim.api.nvim_list_wins() == 1 and vim.bo.filetype == "NvimTree" then
+              vim.cmd("quit")
+            end
+          end,
+        })
+      '';
       statusline.lualine.enable = true;
       git.enable = true;
       autopairs.nvim-autopairs.enable = true;
