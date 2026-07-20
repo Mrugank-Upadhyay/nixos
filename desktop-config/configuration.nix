@@ -152,16 +152,20 @@ in
       "scanner"
       "lp"
       # "plugdev"
+      "docker"
     ];
     packages = with pkgs; [
       kdePackages.kate
       nodejs_22
+      pnpm
       proton-vpn
       opentabletdriver
       xournalpp
       code-cursor-fhs
       mangayomi
       claude-code
+      zed-editor
+      komikku
     ];
     shell = pkgs.zsh;
   };
@@ -228,7 +232,10 @@ in
     pnpm
     kdePackages.plasma-nm
     zathura
+    suwayomi-server
     # ddcutil
+    postgresql_16
+    redis
   ];
 
   # SSH Agent
@@ -237,8 +244,17 @@ in
     enable = true;
     openFirewall = true;
   };
- 
-  
+
+  # ── Tailscale ─────────────────────────────────────────
+  services.tailscale.enable = true;
+
+  # ── Docker ────────────────────────────────────────────
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
+
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -258,10 +274,16 @@ in
   # Or disable the firewall altogether.
   networking.firewall = {
     enable = true;
+    trustedInterfaces = [ "tailscale0" ];
+    allowedTCPPorts = [
+      22    # SSH
+      11434 # Ollama
+    ];
     allowedTCPPortRanges = [ 
       { from = 1714; to = 1764; } # KDE Connect
     ];  
-    allowedUDPPortRanges = [ 
+    allowedUDPPorts = [ config.services.tailscale.port ];
+    allowedUDPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];
   };

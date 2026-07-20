@@ -30,10 +30,13 @@
     yt-dlp # CLI Audio/Video Downloader
     obsidian
     devenv # Per-project dev environments
+    inputs.claude-desktop.packages.${pkgs.system}.claude-desktop-with-fhs # Claude Desktop (FHS build, supports MCP servers)
   ];
 
 
-  # programs.zsh.enable = true;
+  programs.htop = {
+    enable = true;
+  };
 
   # Install ZSH and Integrations
   programs.command-not-found.enable = true;

@@ -3,4 +3,6 @@ inputs:
     url: github:cachix/devenv-nixpkgs/rolling
   nixpkgs-python:
     url: github:cachix/nixpkgs-python
-    follows: nixpkgs
+    inputs:
+      nixpkgs:
+        follows: nixpkgs

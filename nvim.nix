@@ -10,6 +10,15 @@
       viAlias = true;
       vimAlias = true;
 
+      options = {
+        tabstop = 4;
+        shiftwidth = 4;
+        softtabstop = 4;
+        expandtab = true;
+      };
+
+      utility.sleuth.enable = true;
+
       clipboard = {
         enable = true;
         registers = "unnamedplus";

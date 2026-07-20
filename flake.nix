@@ -51,6 +51,15 @@
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Pinned to nixos-24.11 (not following our nixpkgs): upstream's package build
+    # still references `nodePackages.asar`, which was removed from current nixpkgs.
+    # This only affects build tooling (electron/asar/etc), not the app itself or
+    # available models. See https://github.com/k3d3/claude-desktop-linux-flake/issues/91
+    claude-desktop = {
+      url = "github:k3d3/claude-desktop-linux-flake";
+      inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    };
   };
 
   outputs = inputs@{ nixpkgs, home-manager, vicinae, ...} : {
