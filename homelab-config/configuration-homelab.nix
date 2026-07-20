@@ -141,6 +141,7 @@
     pnpm
     nodejs_22
     packagekit
+    autossh
   ];
 
   # SSH Agent
@@ -154,6 +155,15 @@
       ClientAliveCountMax = 2;
     };
   };
+
+  # AutoSSH
+  services.autossh.sessions = [
+    {
+      extraArguments = "-N -R 10080:localhost:8080 ubuntu@homelab.mrugank.dev";
+      name = "vps";
+      user = "homelab";
+    }
+  ];
  
   # Cockpit Config
   services.cockpit = {
