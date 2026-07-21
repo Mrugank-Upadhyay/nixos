@@ -28,7 +28,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Toronto";
+  time.timeZone = "America/Los_Angeles";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
@@ -83,6 +83,7 @@
     extraGroups = [ 
       "networkmanager" 
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [];
     shell = pkgs.zsh;
@@ -103,16 +104,12 @@
     silent = true;
   };
 
-  fonts.packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "Hasklig"
-          "Iosevka"
-          "VictorMono"
-        ];
-      })
-    ];
+  fonts.packages = with pkgs.nerd-fonts; [
+    fira-code
+    hasklug
+    iosevka
+    victor-mono
+  ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -142,6 +139,9 @@
     nodejs_22
     packagekit
     autossh
+    postgresql_16
+    redis
+    jq
   ];
 
   # SSH Agent
@@ -178,7 +178,64 @@
   
   services.packagekit.enable = true;
 
-  # Homepage Dashboard
+
+  # ── Tailscale ─────────────────────────────────────────
+  services.tailscale.enable = true;
+  
+
+  # ── PostgreSQL + pgvector ─────────────────────────────
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_16;
+    extensions = ps: [ ps.pgvector ];
+
+    settings = {
+      listen_addresses = pkgs.lib.mkForce "*";
+      shared_buffers = "4GB";
+      effective_cache_size = "10GB";
+      work_mem = "32MB";
+      max_connections = 50;
+    };
+
+    authentication = pkgs.lib.mkOverride 10 ''
+      # Type  Database  User  Address         Method
+      local   all       all                   trust
+      host    all       all   127.0.0.1/32    trust
+      host    all       all   100.64.0.0/10   md5
+    '';
+
+    ensureDatabases = [ "kairos" ];
+    ensureUsers = [
+      {
+        name = "kairos";              # Postgres role name
+        ensureDBOwnership = true;     # owns the kairos database
+      }
+      {
+        name = "homelab";             # let system user connect via psql without sudo
+        ensureClauses = {
+          superuser = true;
+        };
+      }
+    ];
+  };
+
+
+  # ── Redis ─────────────────────────────────────────────
+  services.redis.servers."" = {
+    enable = true;
+    port = 6379;
+    bind = "127.0.0.1";
+    settings = {
+      maxmemory = "128mb";
+      maxmemory-policy = "noeviction"; # Set to no-eviction so we don't get jobs silently dropped before they're processed
+    };
+  };
+
+  # ── Docker ────────────────────────────────────────────
+  virtualisation.docker = {
+    enable = true;
+    autoPrune.enable = true;
+  };
 
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -200,9 +257,20 @@
   # Or disable the firewall altogether.
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 9090 ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+    allowedTCPPorts = [ 
+    	22    # SSH (local + autossh)
+	3000  # Frontend
+	5432  # PostgreSQL (tailscale only, enforced via ACLs)
+	6379  # Redis (tailscale only, enforced via ACLs)
+	8000  # API server
+	9090  # Cockpit
+    ];
   };
 
+
+
+  
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
