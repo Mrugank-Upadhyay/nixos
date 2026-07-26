@@ -13,6 +13,8 @@
 
   programs.home-manager.enable = true;
 
+  programs.plasma.enable = true;
+
   home.packages = with pkgs; [
     github-desktop
     ripgrep
@@ -55,6 +57,7 @@
       ddc-hd = "sudo ddcutil -d 1 setvcp 10";
       npm = "pnpm";
       npx = "pnpm dlx";
+      rc2nix = "nix run ~/nixos#rc2nix";
       ssh-homelab = "ssh homelab@192.168.1.145";
       ssh-vps = "ssh ubuntu@192.9.147.141";
     };

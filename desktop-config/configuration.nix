@@ -166,6 +166,7 @@ in
       claude-code
       zed-editor
       komikku
+      netflix
     ];
     shell = pkgs.zsh;
   };
@@ -236,6 +237,10 @@ in
     # ddcutil
     postgresql_16
     redis
+    vulkan-tools
+    jq
+    caffeine-ng
+    jetbrains.datagrip # Database Data Management Tool
   ];
 
   # SSH Agent
@@ -286,6 +291,24 @@ in
     allowedUDPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];
+  };
+
+
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-vulkan;
+    host = "0.0.0.0";         # listen on all interfaces so N100 can reach it over Tailscale
+    port = 11434;
+
+    loadModels = [
+      "llama3.1:8b"
+      "nomic-embed-text"
+    ];
+  };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;  # optional, only if you need 32-bit Vulkan support
   };
 
   # Allow Virtualization

@@ -31,6 +31,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+  
+
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -64,6 +71,11 @@
 
   outputs = inputs@{ nixpkgs, home-manager, vicinae, ...} : {
 
+    apps.x86_64-linux.rc2nix = {
+      type = "app";
+      program = "${inputs.plasma-manager.packages.x86_64-linux.rc2nix}/bin/rc2nix";
+    };
+
     nixosConfigurations.mrugankDesktop = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -82,7 +94,10 @@
           home-manager.useGlobalPkgs = true;
           home-manager.backupFileExtension = "hm-backup";
           home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.sharedModules = [ vicinae.homeManagerModules.default ];
+          home-manager.sharedModules = [
+            vicinae.homeManagerModules.default
+            inputs.plasma-manager.homeModules.plasma-manager
+          ];
           home-manager.users.mrugank = import ./home.nix;
         }
 	vicinae.nixosModules.default
