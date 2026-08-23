@@ -1,0 +1,12 @@
+# sops encryption policy. Secrets under secrets/ are encrypted to BOTH keys:
+#  - admin: your personal age key (~/.config/sops/age/keys.txt) — lets you edit
+#  - homelab: derived from the homelab's SSH host key — lets the box decrypt at boot
+keys:
+  - &admin age1d7hjdv7kyq6y4p5s5cpthdpsg90a9v8qw6cgs6z9sszzrfvwmpusaxusqg
+  - &homelab age1ngd2804n3kelgymrxfmwc493ys7t4xgdm8gsam5dfy07ntuhe4wszvsqxd
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - age:
+          - *admin
+          - *homelab

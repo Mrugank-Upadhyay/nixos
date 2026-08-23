@@ -204,7 +204,7 @@
       host    all       all   100.64.0.0/10   md5
     '';
 
-    ensureDatabases = [ "kairos" ];
+    ensureDatabases = [ "kairos" "expensieve" ];
     ensureUsers = [
       {
         name = "kairos";              # Postgres role name
@@ -216,7 +216,28 @@
           superuser = true;
         };
       }
+      {
+        name = "expensieve";          # owns the expensieve database
+        ensureDBOwnership = true;
+        # NB: NixOS can't set the login password declaratively. Set it once to
+        # match the sops secret: ALTER ROLE expensieve PASSWORD '<db_password>';
+      }
     ];
+  };
+
+  # ── sops secrets ──────────────────────────────────────
+  # Decrypted at activation into /run/secrets using the host SSH key as the age
+  # identity (no separate key to install). The expensieve DATABASE_URL is exposed
+  # to services via a rendered env file; db_password is used once to provision the
+  # Postgres role (see expensieve DB role above).
+  sops = {
+    defaultSopsFile = ../secrets/expensieve.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets.database_url = { };
+    secrets.db_password = { };
+    templates."expensieve.env".content = ''
+      DATABASE_URL=${config.sops.placeholder.database_url}
+    '';
   };
 
 

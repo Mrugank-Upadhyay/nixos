@@ -31,6 +31,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Encrypted secrets (sops) decrypted at activation into /run/secrets.
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -111,6 +117,7 @@
       system = "x86_64-linux";
       modules = [
         ./homelab-config/configuration-homelab.nix
+        inputs.sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager {
           home-manager.useUserPackages = true;
           home-manager.useGlobalPkgs = true;
