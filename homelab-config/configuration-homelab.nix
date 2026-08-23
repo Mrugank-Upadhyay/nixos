@@ -264,7 +264,7 @@
   };
 
   # ── Expensieve dashboard ──────────────────────────────
-  # Streamlit app served from a git checkout at ~/Expensieve, run through the
+  # Streamlit app served from a git checkout at ~/development/Expensieve, run through the
   # repo's own flake devshell. DATABASE_URL comes from the rendered sops env.
   # wantedBy multi-user.target + Restart=always => it comes up on every boot
   # (including after a power cut) and recovers from crashes. StartLimitIntervalSec=0
@@ -280,7 +280,7 @@
     unitConfig.StartLimitIntervalSec = 0;
     serviceConfig = {
       User = "homelab";
-      WorkingDirectory = "/home/homelab/Expensieve";
+      WorkingDirectory = "/home/homelab/development/Expensieve";
       EnvironmentFile = config.sops.templates."expensieve.env".path;
       ExecStart =
         "${pkgs.nix}/bin/nix develop --command streamlit run app/Overview.py "
