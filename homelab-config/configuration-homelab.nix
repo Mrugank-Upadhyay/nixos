@@ -286,7 +286,7 @@
         "${pkgs.nix}/bin/nix develop --command streamlit run app/Overview.py "
         + "--server.address 0.0.0.0 --server.port 8501 --server.headless true";
       Restart = "always";
-      RestartSec = 5;
+      RestartSec = 10;   # gentle retry gap: self-heals without log-spamming while down
     };
   };
 
