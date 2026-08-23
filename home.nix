@@ -33,6 +33,7 @@
     obsidian
     devenv # Per-project dev environments
     inputs.claude-desktop.packages.${pkgs.system}.claude-desktop-with-fhs # Claude Desktop (FHS build, supports MCP servers)
+    chromium # Browser for the Playwright MCP (Claude Code drives it to view local web apps)
   ];
 
 
