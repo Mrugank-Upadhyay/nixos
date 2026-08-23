@@ -198,10 +198,15 @@
     };
 
     authentication = pkgs.lib.mkOverride 10 ''
-      # Type  Database  User  Address         Method
-      local   all       all                   trust
-      host    all       all   127.0.0.1/32    trust
-      host    all       all   100.64.0.0/10   md5
+      # Type  Database  User      Address         Method
+      local   all       all                       trust
+      host    all       all       127.0.0.1/32    trust
+      host    all       all       100.64.0.0/10   md5
+      # Vespera's api container (docker-compose's pinned "vespera" bridge
+      # network) — scoped to just its own role/database, not "all all",
+      # so other containers on this host can't use this rule to reach
+      # kairos or brute-force other roles. See Vespera's docs/DECISIONS.md.
+      host    vespera   vespera   172.18.0.0/16   md5
     '';
 
     ensureDatabases = [ "kairos" "expensieve" ];
