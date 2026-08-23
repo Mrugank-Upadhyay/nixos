@@ -263,6 +263,33 @@
     autoPrune.enable = true;
   };
 
+  # ── Expensieve dashboard ──────────────────────────────
+  # Streamlit app served from a git checkout at ~/Expensieve, run through the
+  # repo's own flake devshell. DATABASE_URL comes from the rendered sops env.
+  # wantedBy multi-user.target + Restart=always => it comes up on every boot
+  # (including after a power cut) and recovers from crashes. StartLimitIntervalSec=0
+  # means systemd retries forever instead of giving up if nix/network/Postgres
+  # aren't ready yet at boot, so the service always converges to running.
+  systemd.services.expensieve = {
+    description = "Expensieve Streamlit dashboard";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" "postgresql.service" "tailscaled.service" ];
+    path = [ pkgs.nix pkgs.git pkgs.bash ];
+    environment.HOME = "/home/homelab";   # writable HOME for nix eval + ~/.streamlit
+    unitConfig.StartLimitIntervalSec = 0;
+    serviceConfig = {
+      User = "homelab";
+      WorkingDirectory = "/home/homelab/Expensieve";
+      EnvironmentFile = config.sops.templates."expensieve.env".path;
+      ExecStart =
+        "${pkgs.nix}/bin/nix develop --command streamlit run app/Overview.py "
+        + "--server.address 0.0.0.0 --server.port 8501 --server.headless true";
+      Restart = "always";
+      RestartSec = 5;
+    };
+  };
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -292,6 +319,10 @@
 	8000  # API server
 	9090  # Cockpit
     ];
+    # Expensieve dashboard: opened ONLY on the tailscale interface, so the
+    # financial data (no auth) is reachable over the tailnet but never on the
+    # LAN, even though streamlit binds 0.0.0.0.
+    interfaces."tailscale0".allowedTCPPorts = [ 8501 ];
   };
 
 
