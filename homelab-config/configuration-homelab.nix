@@ -85,7 +85,9 @@
       "wheel"
       "docker"
     ];
-    packages = with pkgs; [];
+    packages = with pkgs; [
+      claude-code
+    ];
     shell = pkgs.zsh;
   };
   
@@ -290,6 +292,24 @@
     };
   };
 
+  services.terraria = {
+    enable = true;
+    port = 7777;
+    maxPlayers = 10;
+    messageOfTheDay = "Welcome to the NixOS Terraria Server!";
+    openFirewall = true;
+    worldPath = "/var/lib/terraria/The_Nugget_of_Lies.wld";
+    # nixpkgs ships 1.4.5.6; our world was saved by a Windows client on 1.4.5.8,
+    # so the stock server can't load it ("LaterVersion" in the world picker).
+    package = pkgs.terraria-server.overrideAttrs (old: {
+      version = "1.4.5.8";
+      src = pkgs.fetchurl {
+        url = "https://terraria.org/api/download/pc-dedicated-server/terraria-server-1458.zip";
+        hash = "sha256-9ROkrJeJ00r3Zika4hfJzX2UcuE3gqDisXUS9w16gzQ=";
+      };
+    });
+  };
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -305,7 +325,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [  ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall = {
@@ -316,6 +336,7 @@
 	3000  # Frontend
 	5432  # PostgreSQL (tailscale only, enforced via ACLs)
 	6379  # Redis (tailscale only, enforced via ACLs)
+	7777  # Terraria server
 	8000  # API server
 	9090  # Cockpit
     ];
